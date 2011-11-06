@@ -9,9 +9,9 @@ before do
 end
 
 get %r{/([\w]+)} do |hash|
-	url = $r.get(URL_TOKEN + hash)
+	url = $r.get(URL_TOKEN_NAMESPACE + hash)
 	unless url.nil?
-		$r.incr(CLICK_COUNTER + hash)
+		$r.incr(CLICK_COUNTER_NAMESPACE + hash)
 		status 302
 		headers "Location" => url
 	else
@@ -23,7 +23,7 @@ end
 post "/url" do
 	unless params[:url].nil?
 		token = TokenGenerator.new.generate_token(params[:url])
-		$r.set(URL_TOKEN + token, params[:url])
+		$r.set(URL_TOKEN_NAMESPACE + token, params[:url])
 		output = { shorturl: DOMAIN + token}.to_json
 	else
 		status 400 # Bad Request
