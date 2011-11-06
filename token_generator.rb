@@ -1,4 +1,4 @@
-require 'digest/md5'
+require 'digest/sha1'
 
 class TokenGenerator
 	ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split(//)
