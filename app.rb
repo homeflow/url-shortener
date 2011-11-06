@@ -24,9 +24,9 @@ post "/url" do
 	unless params[:url].nil?
 		token = TokenGenerator.new.generate_token(params[:url])
 		$r.set(URL_TOKEN_NAMESPACE + token, params[:url])
-		output = { shorturl: DOMAIN + token}.to_json
+		body { shorturl: DOMAIN + token}.to_json
 	else
 		status 400 # Bad Request
-		output = {error: "Empty URL"}.to_json
+		body {error: "Empty URL"}.to_json
 	end
 end
