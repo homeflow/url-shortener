@@ -1,4 +1,4 @@
-Simpe URL shortener with Ruby, Sinatra and Redis
+Simple URL shortener with Ruby, Sinatra and Redis
 =================================================
 by Felipe Ribeiro <felipernb@gmail.com>
 
