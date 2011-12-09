@@ -1,6 +1,6 @@
 DOMAIN = "http://frnb.in/"
 
-ENV['REDIS_URL'] = "redis://LOGIN:PASSWORD@HOST:PORT/"
+ENV['REDIS_URL'] = "redis://LOGIN:PASSWORD@HOST:PORT/" if !ENV['REDIS_URL']
 
 CLICK_COUNTER_NAMESPACE = "clicks:"
 URL_TOKEN_NAMESPACE = "url:"
