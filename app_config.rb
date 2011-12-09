@@ -1,7 +1,6 @@
 DOMAIN = "http://frnb.in/"
 
-REDIS_HOST = "127.0.0.1"
-REDIS_PORT = 6379
+ENV['REDIS_URL'] = "redis://LOGIN:PASSWORD@HOST:PORT/"
 
 CLICK_COUNTER_NAMESPACE = "clicks:"
 URL_TOKEN_NAMESPACE = "url:"

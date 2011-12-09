@@ -7,7 +7,12 @@ require 'redis'
 require 'uri'
 
 before do
-	$r = Redis.new(:host => REDIS_HOST, :port => REDIS_PORT) if !$r
+    uri = URI.parse(ENV["REDIS_URL"])
+    $r = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password) if !$r
+end
+
+get "/" do
+    "URL Shortener"
 end
 
 get %r{/([\w]+)} do |hash|
@@ -19,7 +24,7 @@ get %r{/([\w]+)} do |hash|
 	else
 		status 404
 	end
-	
+    body nil
 end
 
 post "/url" do
@@ -32,5 +37,5 @@ post "/url" do
 		status 400 # Bad Request
         response = {'error' => 'Invalid URL'}
 	end
-    body response.to_json
+    response.to_json
 end
