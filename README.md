@@ -7,6 +7,7 @@ requires the following gems:
 * redis
 * sinatra
 * json
+* hiredis
 
 It works as a REST API and to shorten an URL, one must do:
 
