@@ -47,6 +47,7 @@ end
 
 post "/url" do
 	unless params[:url].nil? and (params[:url] =~ URI::regexp).nil?
+		params[:url] = "http://" + params[:url] if params[:url][0..3] != "http"
 		token = TokenGenerator.new.generate_token(params[:url])
 		$r.set(URL_TOKEN_NAMESPACE + token, params[:url])
         $r.sadd('urls',token+ "*" +params[:url])
