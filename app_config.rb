@@ -1,6 +1,5 @@
-DOMAIN = "http://frnb.in/"
+DOMAIN = "http://s.homeflow.co.uk/"
 
-ENV['REDIS_URL'] = "redis://LOGIN:PASSWORD@HOST:PORT/" if !ENV['REDIS_URL']
 
 CLICK_COUNTER_NAMESPACE = "clicks:"
 URL_TOKEN_NAMESPACE = "url:"

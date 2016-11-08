@@ -1,32 +1,37 @@
 require 'sinatra'
+
 require 'json'
 require './app_config'
 require './token_generator'
 require 'hiredis'
 require 'redis'
+require "redis/namespace"
 require 'uri'
 require './page'
 
 before do
-    uri = URI.parse(ENV["REDIS_URL"])
-    $r = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password) if !$r
+    $r = Redis::Namespace.new(:url_short, :redis => Redis.new)
 end
 
 get "/urls" do
-    H = HTMLGen.new if !defined?(H)
-    H.set_title "URLs"
-    url_list = ""
-    $r.smembers('urls').each do |token_url| 
-        token, url = token_url.split('*')
-        clicks = $r.get(CLICK_COUNTER_NAMESPACE + token)
-        clicks = 0 if clicks.nil?
-        url_list << H.li {DOMAIN + token + " - " + url + ": "+ clicks + " clicks"}
-    end
-    H.page {
+      H = HTMLGen.new if !defined?(H)
+      H.set_title "URLs"
+      url_list = ""
+      $r.smembers('urls').each do |token_url|
+        begin 
+          token, url = token_url.split('*')
+          clicks = $r.get(CLICK_COUNTER_NAMESPACE + token)
+          clicks = 0 if clicks.nil?
+          url_list << H.li {DOMAIN + token + " - " + url + ": "+ clicks.to_s + " clicks"}
+        rescue Exception => e
+          puts "Url_short "+token_url+" "+e.message
+        end
+      end
+      H.page {
         H.ul {
             url_list
         }
-    }
+      }
 end
 
 get %r{/([a-zA-Z0-9]+)/stats} do |hash|
@@ -54,7 +59,7 @@ post "/url" do
         response = {'shorturl' => DOMAIN + token}
 	else
 		status 400 # Bad Request
-        response = {'error' => 'Invalid URL'}
+        response = {'error' => 'Invalid URL'+params.inspect}
 	end
     response.to_json
 end
